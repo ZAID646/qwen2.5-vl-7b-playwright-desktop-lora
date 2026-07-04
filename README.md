@@ -1,3 +1,24 @@
+---
+language: en
+license: apache-2.0
+library_name: peft
+pipeline_tag: text-generation
+tags:
+- qwen2.5
+- qwen
+- lora
+- qlora
+- peft
+- playwright
+- ui-agent
+- desktop-automation
+- browser-sandbox
+base_model: Qwen/Qwen2.5-7B-Instruct
+datasets:
+- zaid646/multimodal-vision-agent-lora
+inference: false
+---
+
 <div align="center">
 
 # Qwen2.5-VL-7B Playwright Desktop LoRA
