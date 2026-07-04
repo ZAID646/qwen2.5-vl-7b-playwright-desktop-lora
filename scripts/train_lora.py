@@ -35,21 +35,40 @@ from transformers import (
 )
 
 TRAINING_EXAMPLES: list[dict[str, str]] = [
+    # --- Click actions ---
     {"text": "### Human: Click the login button\n### Assistant: <action>{\"action\":\"click\",\"bbox\":[450,380,120,40]}</action>"},
-    {"text": "### Human: Type email into the field\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[400,300,200,36],\"text\":\"user@example.com\"}</action>"},
-    {"text": "### Human: Navigate to settings\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"/settings\"}</action>"},
-    {"text": "### Human: Search for AI news\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[200,100,400,40],\"text\":\"AI news\"}</action>"},
-    {"text": "### Human: Scroll down\n### Assistant: <action>{\"action\":\"scroll\",\"direction\":\"down\"}</action>"},
     {"text": "### Human: Click submit\n### Assistant: <action>{\"action\":\"click\",\"bbox\":[500,600,100,40]}</action>"},
-    {"text": "### Human: Go to dashboard\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"/dashboard\"}</action>"},
-    {"text": "### Human: Fill search box\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[100,80,600,36],\"text\":\"query\"}</action>"},
     {"text": "### Human: Click first result\n### Assistant: <action>{\"action\":\"click\",\"bbox\":[100,250,800,60]}</action>"},
-    {"text": "### Human: Scroll up\n### Assistant: <action>{\"action\":\"scroll\",\"direction\":\"up\"}</action>"},
+    {"text": "### Human: Click the sign up link\n### Assistant: <action>{\"action\":\"click\",\"selector\":\"a[href='/signup']\"}</action>"},
     {"text": "### Human: Select dropdown\n### Assistant: <action>{\"action\":\"click\",\"bbox\":[300,400,200,40]}</action>"},
     {"text": "### Human: Submit form\n### Assistant: <action>{\"action\":\"click\",\"bbox\":[450,700,120,40]}</action>"},
-    {"text": "### Human: Open profile\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"/profile\"}</action>"},
-    {"text": "### Human: Type password\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[400,350,200,36],\"text\":\"********\"}</action>"},
     {"text": "### Human: Check checkbox\n### Assistant: <action>{\"action\":\"click\",\"bbox\":[350,500,20,20]}</action>"},
+    {"text": "### Human: Close modal\n### Assistant: <action>{\"action\":\"click\",\"selector\":\".modal-close\"}</action>"},
+    {"text": "### Human: Click next page\n### Assistant: <action>{\"action\":\"click\",\"selector\":\"a.pagination-next\"}</action>"},
+    # --- Type actions ---
+    {"text": "### Human: Type email into the field\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[400,300,200,36],\"text\":\"user@example.com\"}</action>"},
+    {"text": "### Human: Search for AI news\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[200,100,400,40],\"text\":\"AI news\"}</action>"},
+    {"text": "### Human: Fill search box\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[100,80,600,36],\"text\":\"query\"}</action>"},
+    {"text": "### Human: Type password\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[400,350,200,36],\"text\":\"********\"}</action>"},
+    {"text": "### Human: Enter username\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[400,250,200,36],\"text\":\"admin\"}</action>"},
+    {"text": "### Human: Type message in chat\n### Assistant: <action>{\"action\":\"type\",\"selector\":\"#chat-input\",\"text\":\"Hello!\"}</action>"},
+    {"text": "### Human: Enter coupon code\n### Assistant: <action>{\"action\":\"type\",\"bbox\":[200,450,300,36],\"text\":\"SAVE20\"}</action>"},
+    {"text": "### Human: Type username into the username field\n### Assistant: <action>{\"action\":\"type\",\"xpath\":\"//input[@id='username']\",\"text\":\"testuser\"}</action>"},
+    {"text": "### Human: Type email into the email field\n### Assistant: <action>{\"action\":\"type\",\"xpath\":\"//input[@type='email']\",\"text\":\"user@example.com\"}</action>"},
+    # --- Navigate actions ---
+    {"text": "### Human: Navigate to settings\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"/settings\"}</action>"},
+    {"text": "### Human: Go to dashboard\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"/dashboard\"}</action>"},
+    {"text": "### Human: Open profile\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"/profile\"}</action>"},
+    {"text": "### Human: Go to home page\n### Assistant: <action>{\"action\":\"navigate\",\"url\":\"https://example.com\"}</action>"},
+    # --- Scroll actions ---
+    {"text": "### Human: Scroll down\n### Assistant: <action>{\"action\":\"scroll\",\"direction\":\"down\"}</action>"},
+    {"text": "### Human: Scroll up\n### Assistant: <action>{\"action\":\"scroll\",\"direction\":\"up\"}</action>"},
+    {"text": "### Human: Scroll down the page\n### Assistant: <action>{\"action\":\"scroll\",\"direction\":\"down\"}</action>"},
+    # --- Wait action ---
+    {"text": "### Human: Wait for results to load\n### Assistant: <action>{\"action\":\"wait\"}</action>"},
+    # --- Done action ---
+    {"text": "### Human: Stop\n### Assistant: <action>{\"action\":\"done\"}</action>"},
+    {"text": "### Human: Finish\n### Assistant: <action>{\"action\":\"done\"}</action>"},
 ]
 
 
@@ -68,9 +87,6 @@ def main() -> None:
     parser.add_argument("--push", action="store_true", default=True, help="Push to HuggingFace Hub")
     args = parser.parse_args()
 
-    # ------------------------------------------------------------------
-    # 1. 4-bit quantization config (NF4)
-    # ------------------------------------------------------------------
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.float16,
@@ -78,9 +94,6 @@ def main() -> None:
         bnb_4bit_use_double_quant=True,
     )
 
-    # ------------------------------------------------------------------
-    # 2. Load base model + tokenizer
-    # ------------------------------------------------------------------
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device: {device}")
     if torch.cuda.is_available():
@@ -99,9 +112,6 @@ def main() -> None:
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
-    # ------------------------------------------------------------------
-    # 3. Prepare for k-bit training + LoRA
-    # ------------------------------------------------------------------
     model = prepare_model_for_kbit_training(model)
 
     lora_config = LoraConfig(
@@ -115,9 +125,6 @@ def main() -> None:
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
 
-    # ------------------------------------------------------------------
-    # 4. Tokenize dataset
-    # ------------------------------------------------------------------
     def tokenize_fn(examples: dict) -> dict:
         tokens = tokenizer(
             examples["text"],
@@ -131,9 +138,6 @@ def main() -> None:
     dataset = Dataset.from_list(TRAINING_EXAMPLES)
     tokenized = dataset.map(tokenize_fn, remove_columns=["text"])
 
-    # ------------------------------------------------------------------
-    # 5. Training arguments
-    # ------------------------------------------------------------------
     training_args = TrainingArguments(
         output_dir=args.output,
         per_device_train_batch_size=args.batch_size,
@@ -155,15 +159,9 @@ def main() -> None:
         data_collator=default_data_collator,
     )
 
-    # ------------------------------------------------------------------
-    # 6. Train
-    # ------------------------------------------------------------------
     print("\nStarting QLoRA training...")
     trainer.train()
 
-    # ------------------------------------------------------------------
-    # 7. Save
-    # ------------------------------------------------------------------
     print(f"\nSaving adapter weights to {args.output}")
     trainer.save_model(args.output)
     tokenizer.save_pretrained(args.output)
@@ -175,9 +173,6 @@ def main() -> None:
     for p in Path(args.output).iterdir():
         print(f"  {p.name}")
 
-    # ------------------------------------------------------------------
-    # 8. Push to HuggingFace Hub
-    # ------------------------------------------------------------------
     if args.push and args.hf_token:
         print(f"\nPushing to HuggingFace Hub: {args.hf_repo}")
         model.push_to_hub(args.hf_repo, token=args.hf_token)

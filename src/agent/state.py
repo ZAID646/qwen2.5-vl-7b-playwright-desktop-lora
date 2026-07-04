@@ -13,6 +13,13 @@ class BoundingBox:
     width: float
     height: float
 
+    @classmethod
+    def from_list(cls, arr: list[float]) -> BoundingBox:
+        return cls(x=arr[0], y=arr[1], width=arr[2], height=arr[3])
+
+    def center(self) -> tuple[float, float]:
+        return (self.x + self.width / 2, self.y + self.height / 2)
+
 
 @dataclass
 class VisionOutput:
@@ -20,6 +27,7 @@ class VisionOutput:
     bbox: BoundingBox | None = None
     text: str | None = None
     url: str | None = None
+    selector: str | None = None
     scroll_direction: Literal["up", "down"] | None = None
     confidence: float = 0.0
     reasoning: str = ""
@@ -32,6 +40,7 @@ class StepRecord:
     bbox: BoundingBox | None = None
     text: str | None = None
     url: str | None = None
+    selector: str | None = None
     scroll_direction: Literal["up", "down"] | None = None
     confidence: float = 0.0
     reasoning: str = ""
