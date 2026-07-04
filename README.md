@@ -519,13 +519,11 @@ The adapter correctly predicts structured actions from text prompts:
 
 ### Browser Screenshots
 
-Playwright successfully navigated to all 5 benchmark sites on a headless Chromium sandbox. Below are sample screenshots captured during the evaluation:
+Playwright sandbox navigating to a local test login page. The model correctly predicted all three actions (fill username, fill password, click login) using the trained LoRA adapter:
 
-<img src="docs/screenshots/s004_before.png" width="300" alt="Hacker News before"> <img src="docs/screenshots/s004_after.png" width="300" alt="Hacker News after">
+<img src="docs/screenshots/login_before.png" width="300" alt="Login page before"> <img src="docs/screenshots/login_after.png" width="300" alt="Login page after form submission">
 
-<img src="docs/screenshots/s001_before.png" width="300" alt="GitHub login before"> <img src="docs/screenshots/s001_after.png" width="300" alt="GitHub login after">
-
-*Hacker News and GitHub login pages captured by the Playwright sandbox during agent evaluation. All 10 screenshots (before/after for all 5 scenarios) are available in `docs/screenshots/`.*
+*Left: Login form before interaction. Right: After model predicted actions — the form was filled and submitted (page navigated to `/login`).*
 
 > **Note:** The full perception-action loop requires the real VLM. MockVLM is a deterministic stub for development; with the actual LoRA adapter loaded, the agent performs visual reasoning on each screenshot to decide the next action.
 
