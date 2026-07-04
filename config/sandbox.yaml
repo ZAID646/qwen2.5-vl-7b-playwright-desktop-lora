@@ -1,0 +1,15 @@
+browser:
+  headless: true
+  viewport:
+    width: 1280
+    height: 720
+  timeout: 30000
+
+sandbox:
+  max_steps_per_task: 20
+  screenshot_on_action: true
+  record_dom: true
+
+async:
+  max_concurrent_tasks: 4
+  browser_idle_timeout: 60

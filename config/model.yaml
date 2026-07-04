@@ -1,0 +1,18 @@
+mock_vlm: true
+
+model:
+  name: "Qwen/Qwen2-VL-7B-Instruct"
+  precision: "4bit"
+  quant_method: "nf4"       # nf4 | awq | gptq
+  gpu_memory_utilization: 0.85
+  max_pixels: 1048576        # 1024x1024
+  max_patches: 1024
+
+lora:
+  enabled: false
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "v_proj"

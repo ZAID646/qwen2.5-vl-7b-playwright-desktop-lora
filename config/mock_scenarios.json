@@ -1,0 +1,27 @@
+{
+  "login": {
+    "action": "click",
+    "bbox": { "x": 450, "y": 380, "width": 120, "height": 40 },
+    "confidence": 0.97,
+    "reasoning": "Login button detected in center-right of viewport"
+  },
+  "search": {
+    "action": "type",
+    "bbox": { "x": 200, "y": 150, "width": 600, "height": 40 },
+    "text": "test query",
+    "confidence": 0.95,
+    "reasoning": "Search field found at top of page"
+  },
+  "navigate": {
+    "action": "navigate",
+    "url": "https://example.com/target",
+    "confidence": 0.99,
+    "reasoning": "Navigation link detected in page content"
+  },
+  "scroll": {
+    "action": "scroll",
+    "scroll_direction": "down",
+    "confidence": 0.88,
+    "reasoning": "Content extends below viewport, scrolling down"
+  }
+}
