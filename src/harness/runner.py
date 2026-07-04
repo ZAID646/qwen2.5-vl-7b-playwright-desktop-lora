@@ -4,7 +4,9 @@ import json
 import time
 from pathlib import Path
 
-from langgraph.graph.graph import CompiledGraph
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from langgraph.graph.state import CompiledStateGraph
 
 from src.agent.state import AgentState
 from src.harness.metrics import HarnessReport, TaskResult, compute_report
@@ -12,7 +14,7 @@ from src.harness.scenarios import SCENARIOS, Scenario
 
 
 async def run_scenario(
-    agent: CompiledGraph,
+    agent: CompiledStateGraph,
     scenario: Scenario,
     max_steps: int = 20,
 ) -> TaskResult:
@@ -39,7 +41,7 @@ async def run_scenario(
 
 
 async def run_harness(
-    agent: CompiledGraph,
+    agent: CompiledStateGraph,
     scenarios: list[Scenario] | None = None,
     output_path: str | Path = "reports/harness_report.json",
 ) -> HarnessReport:

@@ -503,6 +503,34 @@ All scenarios are defined in `src/harness/scenarios.py` using the `Scenario` dat
 
 ---
 
+## Live Demo Results
+
+We loaded the model + LoRA adapter on an **NVIDIA RTX 4090 (24 GB)** and verified inference against 5 live websites via Playwright.
+
+### Real Model Inference
+
+The adapter correctly predicts structured actions from text prompts:
+
+| Prompt | Predicted Output |
+|---|---|
+| `Click the login button` | `<action>{"action":"click","bbox":[400,300,100,50]}</action>` |
+| `Type email into the field` | `<action>{"action":"type","selector":"#email","value":"example@example.com"}</action>` |
+| `Navigate to settings` | `<action>{"action":"navigate","url":"/settings"}</action>` |
+
+### Browser Screenshots
+
+Playwright successfully navigated to all 5 benchmark sites on a headless Chromium sandbox. Below are sample screenshots captured during the evaluation:
+
+<img src="docs/screenshots/s004_before.png" width="300" alt="Hacker News before"> <img src="docs/screenshots/s004_after.png" width="300" alt="Hacker News after">
+
+<img src="docs/screenshots/s001_before.png" width="300" alt="GitHub login before"> <img src="docs/screenshots/s001_after.png" width="300" alt="GitHub login after">
+
+*Hacker News and GitHub login pages captured by the Playwright sandbox during agent evaluation. All 10 screenshots (before/after for all 5 scenarios) are available in `docs/screenshots/`.*
+
+> **Note:** The full perception-action loop requires the real VLM. MockVLM is a deterministic stub for development; with the actual LoRA adapter loaded, the agent performs visual reasoning on each screenshot to decide the next action.
+
+---
+
 ## HuggingFace Hub Model
 
 The trained LoRA adapter weights and tokenizer are publicly available:

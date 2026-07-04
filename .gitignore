@@ -23,6 +23,7 @@ Thumbs.db
 # Project artifacts
 .screenshots/
 reports/
+!reports/harness_report.json
 lora-adapters/
 checkpoints/
 *.bin
