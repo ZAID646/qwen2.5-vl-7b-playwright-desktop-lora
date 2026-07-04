@@ -88,7 +88,7 @@ class ActionNode:
             last.success = False
             return {"error": str(e), "success": False}
 
-        return {"current_url": browser.page.url}
+        return {"current_url": browser.page.url, "success": True}
 
     async def _get_browser(self):
         from src.sandbox.browser import get_browser

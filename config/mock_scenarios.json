@@ -1,16 +1,39 @@
 {
+  "log in": {
+    "action": "done",
+    "confidence": 1.0,
+    "reasoning": "Login page loaded, task complete"
+  },
+  "credentials": {
+    "action": "done",
+    "confidence": 1.0,
+    "reasoning": "Credentials entered, task complete"
+  },
+  "search": {
+    "action": "done",
+    "confidence": 1.0,
+    "reasoning": "Search results displayed, task complete"
+  },
+  "form": {
+    "action": "done",
+    "confidence": 1.0,
+    "reasoning": "Form filled and submitted, task complete"
+  },
+  "story": {
+    "action": "done",
+    "confidence": 1.0,
+    "reasoning": "Article and comments loaded, task complete"
+  },
+  "cart": {
+    "action": "done",
+    "confidence": 1.0,
+    "reasoning": "Item added to cart, task complete"
+  },
   "login": {
     "action": "click",
     "bbox": { "x": 450, "y": 380, "width": 120, "height": 40 },
     "confidence": 0.97,
     "reasoning": "Login button detected in center-right of viewport"
-  },
-  "search": {
-    "action": "type",
-    "bbox": { "x": 200, "y": 150, "width": 600, "height": 40 },
-    "text": "test query",
-    "confidence": 0.95,
-    "reasoning": "Search field found at top of page"
   },
   "navigate": {
     "action": "navigate",

@@ -29,10 +29,14 @@ class BrowserManager:
         )
         self._page.set_default_timeout(bc["timeout"])
 
-    async def current_page(self) -> Page:
+    @property
+    def page(self) -> Page:
         if self._page is None:
             raise RuntimeError("Browser not started — call start() first")
         return self._page
+
+    async def current_page(self) -> Page:
+        return self.page
 
     async def close(self) -> None:
         if self._browser:
