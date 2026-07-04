@@ -517,13 +517,29 @@ The adapter correctly predicts structured actions from text prompts:
 | `Type email into the field` | `<action>{"action":"type","selector":"#email","value":"example@example.com"}</action>` |
 | `Navigate to settings` | `<action>{"action":"navigate","url":"/settings"}</action>` |
 
-### Browser Screenshots
+### Real-Site Tests (Before / After)
 
-Playwright sandbox navigating to a local test login page. The model correctly predicted all three actions (fill username, fill password, click login) using the trained LoRA adapter:
+The trained LoRA adapter was tested against 4 real-world scenarios on actual websites, each with a before/after screenshot:
 
-<img src="docs/screenshots/login_before.png" width="300" alt="Login page before"> <img src="docs/screenshots/login_after.png" width="300" alt="Login page after form submission">
+**1. GitHub Login** — model filled username + password fields correctly:
+|<img src="docs/screenshots/github_before.png" width="400" alt="GitHub login before">|<img src="docs/screenshots/github_after.png" width="400" alt="GitHub login after">|
+|---|---|
+|Before — empty login form|After — username & password filled (verified)|
 
-*Left: Login form before interaction. Right: After model predicted actions — the form was filled and submitted (page navigated to `/login`).*
+**2. HTTPBin Form** — model filled name + email fields on a simple form:
+|<img src="docs/screenshots/httpbin_before.png" width="400" alt="HTTPBin form before">|<img src="docs/screenshots/httpbin_after.png" width="400" alt="HTTPBin form after">|
+|---|---|
+|Before — empty form|After — name & email filled (verified)|
+
+**3. Scroll** — model predicted `scroll` action, page scrolled 700px:
+|<img src="docs/screenshots/scroll_before.png" width="400" alt="Scroll before">|<img src="docs/screenshots/scroll_after.png" width="400" alt="Scroll after">|
+|---|---|
+|Before — top of page (y=0)|After — scrolled down (y=700)|
+
+**4. Click Link** — model predicted `click`, navigated to linked page:
+|<img src="docs/screenshots/click_before.png" width="400" alt="Click before">|<img src="docs/screenshots/click_after.png" width="400" alt="Click after">|
+|---|---|
+|Before — httpbin links page|After — clicked 2nd link, URL changed|
 
 > **Note:** The full perception-action loop requires the real VLM. MockVLM is a deterministic stub for development; with the actual LoRA adapter loaded, the agent performs visual reasoning on each screenshot to decide the next action.
 
