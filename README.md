@@ -1,22 +1,12 @@
 ---
-language: en
 license: apache-2.0
 library_name: peft
-pipeline_tag: text-generation
 tags:
 - qwen2.5
-- qwen
-- lora
 - qlora
-- peft
 - playwright
 - ui-agent
-- desktop-automation
-- browser-sandbox
 base_model: Qwen/Qwen2.5-7B-Instruct
-datasets:
-- zaid646/multimodal-vision-agent-lora
-inference: false
 ---
 
 <div align="center">
@@ -27,7 +17,7 @@ inference: false
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue?logo=python&logoColor=white)](https://python.org)
 [![Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
-[![HuggingFace Model](https://img.shields.io/badge/HuggingFace-LoRA%20Adapter-yellow?logo=huggingface&logoColor=white)](https://huggingface.co/zaid646/multimodal-vision-agent-lora)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-LoRA%20Adapter-blue?logo=huggingface&logoColor=white)](https://huggingface.co/zaid646/multimodal-vision-agent-lora)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000)](https://github.com/astral-sh/ruff)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
 
